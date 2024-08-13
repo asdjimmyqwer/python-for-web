@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image</title>
+</head>
+<body>
+    <h1>Upload and Display Image</h1>
+    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" id="file-input">
+        <button type="submit">Upload</button>
+    </form>
+    <h2>Uploaded Image</h2>
+    <img id="uploaded-image" src="#" alt="Your Image" style="display: none;">
+    <script>
+        const form = document.getElementById('upload-form');
+        const image = document.getElementById('uploaded-image');
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const filePath = await response.text();
+            image.src = `/${filePath}`;
+            image.style.display = 'block';
+        };
+    </script>
+</body>
+</html>
